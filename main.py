@@ -31,7 +31,7 @@ handles = [
 
 
 
-st.title('Streamlit Frontend')
+st.title('Diabetes EDA Analysis')
 
 def main():
 
