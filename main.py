@@ -17,9 +17,7 @@ with open('rfr.pkl', 'rb') as file:
 
 rfc = joblib.load('rfc.joblib')
 
-df_ad = pd.read_csv('Advertising.csv')
-df_db = pd.read_csv('diabetes2.csv')
-
+df_db = pd.read_csv('diabetes.csv')
 
 df_db_legend_labels = ['No Diabetes', 'Diabetes']
 handles = [
@@ -32,17 +30,12 @@ st.title('Diabetes EDA Analysis')
 
 def main():
 
-    st.header("EDA for diabetes2.csv")
-
-
     plt.figure(figsize=(10, 5))
     sns.heatmap(df_db.corr(), annot=True)
     plt.title("Heatmap")
     st.pyplot(plt)
-    if st.button("Inferences on diabetes2 Heatmap"):
+    if st.button("Inferences on diabetes Heatmap"):
         st.write("Input inference here")
-
-
 
     plt.figure(figsize=(10, 5))
     plt.scatter(df_db['BloodPressure'], df_db['BMI'], c = df_db['Outcome'], cmap = 'coolwarm')
@@ -83,54 +76,6 @@ def main():
                         color_continuous_scale='Viridis',  # Color map
                         opacity=0.7)
     st.plotly_chart(fig)
-
-    st.header("EDA for Advertising.csv")
-    
-    plt.figure(figsize=(10, 5))
-    sns.heatmap(df_ad.iloc[:,1:].corr(), annot=True)
-    plt.title("Heatmap")
-    st.pyplot(plt)
-    if st.button("Inferences on Advertising Heatmap"):
-        st.write("Input inference here")
-
-    plt.figure(figsize=(10, 5))
-    plt.scatter(df_ad['Radio'], df_ad['Sales'])
-    plt.title("Radio vs Sales")
-    plt.xlabel("Radio")
-    plt.ylabel("Sales")
-    st.pyplot(plt)
-    if st.button("Inferences on Radio vs Sales"):
-        st.write("Input inference here")
-
-
-    plt.figure(figsize=(10, 5))
-    plt.scatter(df_ad['Newspaper'], df_ad['Sales'])
-    plt.title("Newspaper vs Sales")
-    plt.xlabel("Newspaper")
-    plt.ylabel("Sales")
-    st.pyplot(plt)
-    if st.button("Inferences on Newspaper vs Sales"):
-        st.write("Input inference here")
-
-
-    plt.figure(figsize=(10, 5))
-    plt.scatter(df_ad['TV'], df_ad['Sales'])
-    plt.title("TV vs Sales")
-    plt.xlabel("TV")
-    plt.ylabel("Sales")
-    st.pyplot(plt)
-    if st.button("Inferences on TV vs Sales"):
-        st.write("Input inference here")
-
-
-    plt.figure(figsize=(10, 5))
-    plt.bar(['TV', 'Newspaper', 'Radio'], df_ad[['TV', 'Newspaper', 'Radio']].mean())
-    plt.title("Average Sales for TV, Newspaper, Radio")
-    plt.ylabel("Sales")
-    st.pyplot(plt)
-    if st.button("Inferences on Average Sales for TV, Newspaper, Radio"):
-        st.write("Input inference here")
-
 
     st.header("Diabetes Prediction")
 
@@ -188,23 +133,6 @@ def main():
         st.error("Diabetes")
     elif rfc_pred == 0:
         st.success("No Diabetes")
-
-    st.header("Sales Prediction")
-
-    tv = st.slider("TV Sales", min_value = 0.7, max_value = 296.4, step = 0.1)
-    radio = st.slider("Radio Sales", min_value = 0.0, max_value = 49.6, step = 0.1)
-    newspaper = st.slider("Newspaper", min_value = 0.3, max_value = 114.4, step = 0.1)
-
-    rfr_dict = {
-        "TV": tv,
-        "Radio": radio,
-        "Newspaper": newspaper
-    }
-
-    rfr_test_df = pd.DataFrame(rfr_dict, index = [0])
-    rfr_pred = rfr.predict(rfr_test_df)
-
-    st.header(f"Sales: {rfr_pred[0]:.1f}")
 
 if __name__ == '__main__':
     main()
